@@ -1,22 +1,22 @@
 const{v4: uuidv4} = require('uuid');
 const {sectors} = require('./sectorController');
-const {validateDataUser} = require('../models/usuarioModel');
+const {validateDataUser} = require('../model/userModel');
 
 
-let employees = []
+let users = []
 
 const getUsers = (req,res)=>{
     res.status(200).json(users)
 }
 
 const addUsers = (req,res)=>{
-    const employee = req.body
+    const user = req.body
     try{
        const validResult = validateDataUser(user)
        
        if(!validResult.valid)
        {
-            return res.status(400).json({message:'Invalid employee Data', errors : validResult.errors})
+            return res.status(400).json({message:'Invalid user Data', errors : validResult.errors})
        }
 
        if(users.some(e=>e.email===req.body.email))
@@ -29,8 +29,8 @@ const addUsers = (req,res)=>{
         return res.status(404).json({message:'Invalid Sector'})
        }
 
-        employee.id = uuidv4()
-        employees.push(user)
+        user.id = uuidv4()
+        user.push(user)
         res.status(200).json(user)
     }
     catch(err)
@@ -43,7 +43,7 @@ const addUsers = (req,res)=>{
 
 const updateUsers = (req,res)=>{
     const id = req.params.id
-    const employee = req.body
+    const user = req.body
     
     try{
         const index = employees.findIndex((e)=>e.id===id)
@@ -51,8 +51,8 @@ const updateUsers = (req,res)=>{
         {
             return res.status(404).json({message:'User not found'})
         }
-        employees[index] ={...employees[index],... employee}
-        res.status(200).json(employees[index])
+        users[index] ={...users[index],... user}
+        res.status(200).json(users[index])
     }
     catch(err)
     {

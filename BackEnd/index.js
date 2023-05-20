@@ -2,8 +2,8 @@ const express  = require('express')
 const cors = require('cors')
 const app = express()
 
-const userRoutes = require('../routes/userRoutes')
-const sectorRoutes = require('../routes/sectorRoutes')
+const userRoutes = require('./routes/userRoutes')
+const sectorRoutes = require('./routes/sectorRoutes')
 
 const host = '127.0.0.1'
 const port = 3333

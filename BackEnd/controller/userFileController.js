@@ -1,6 +1,6 @@
 const {v4: uuidv4} = require('uuid');
-const {sectorController} = require('../sectorController');
-const {validateDataUser, validateDataUser} = require('../model/userModel');
+const {sectors} = require('./sectorController');
+const { validateDataUser} = require('../model/userModel');
 
 const fs = require('fs');
 //GET users
@@ -68,7 +68,7 @@ const addUsers = (req,res)=>{
       return res.status(400).json({message:'Invalid user Data', errors : validResult.errors})
     }    
 
-    if(!departments.includes(employee.department)) 
+    if(!sectors.includes(user.sector)) 
     {
       return res.status(404).json({message:'Invalid Sector'})
     }
