@@ -14,22 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import ModalComp from "./components/ModalComp";
-import axios from "axios";
-
-const getEmployees = async () => {
-  try{
-  const response = await axios.get("http://localhost:3333/employees");
-return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-}
-useEffect(() => {
-  getEmployees().then((data) => setData(data));
-}, []);
-
-
-
 
 const App = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

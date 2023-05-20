@@ -16,7 +16,6 @@ import { useState } from "react";
 import axios from "axios";
 
 
-
 const ModalComp = ({ data, setData, dataEdit, isOpen, onClose }) => {
   const [name, setName] = useState(dataEdit.name || "");
   const [email, setEmail] = useState(dataEdit.email || "");
