@@ -1,6 +1,6 @@
 const {v4: uuidv4} = require('uuid');
 const {sectorController} = require('../sectorController');
-const {validadeDataUser, validateDataUser} = require('../model/userModel');
+const {validateDataUser, validateDataUser} = require('../model/userModel');
 
 const fs = require('fs');
 //GET users
