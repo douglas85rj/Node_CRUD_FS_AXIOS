@@ -68,7 +68,7 @@ const removeEmployees = async (data) => {
     }
   };
   useEffect(() => {
-    removeEmployees(id).then((data) => setData(employees));
+    removeEmployees().then((data) => setData(employees));
   }, []);
 
 
