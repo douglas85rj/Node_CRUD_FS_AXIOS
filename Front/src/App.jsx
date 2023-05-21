@@ -56,14 +56,8 @@ const App = () => {
       fontSize="20px"
       fontFamily="poppins"
     > 
-      <Box
-        w="100%"
-        maxWidth={1480}
-        p="10"
-        bg="gray.100"
-        borderRadius={8}
-        boxShadow="md"
-      >
+      <Box maxW={800} w="100%" h="100vh" py={10} px={2}>
+    
         <Flex mb="8" justify="space-between" align="center">
           <Button
             as="a"
@@ -89,7 +83,7 @@ const App = () => {
             <Tr>
               <Th>Nome</Th>
               <Th>E-mail</Th>
-              <Th>Telefone</Th>
+              {/* <Th>Telefone</Th>
               <Th>CPF</Th>
               <Th>RG</Th>
               <Th>Endereço</Th>
@@ -97,7 +91,7 @@ const App = () => {
               <Th>UF</Th>
               <Th>Cidade</Th>
               <Th>Editar</Th>
-              <Th>Excluir</Th>
+              <Th>Excluir</Th> */}
             </Tr>
           </Thead>
           <Tbody>
@@ -105,13 +99,13 @@ const App = () => {
               <Tr key={index}>
                 <Td>{employees.name}</Td>
                 <Td>{employees.email}</Td>
-                <Td>{employees.phone}</Td>
+                {/* <Td>{employees.phone}</Td>
                 <Td>{employees.cpf}</Td>
                 <Td>{employees.rg}</Td>
                 <Td>{employees.address}</Td>
                 <Td>{employees.cep}</Td>
                 <Td>{employees.uf}</Td>
-                <Td>{employees.city}</Td>
+                <Td>{employees.city}</Td> */}
                 <Td>
                   <Button
 
@@ -146,6 +140,16 @@ const App = () => {
           </Tbody>
         </Table>
       </Box>
+      {isOpen && (
+        <ModalComp
+          isOpen={isOpen}
+          onClose={onClose}
+          data={data}
+          setData={setData}
+          dataEdit={dataEdit}
+          setDataEdit={setDataEdit}
+        />
+      )}
     </Flex>
   );
 };
