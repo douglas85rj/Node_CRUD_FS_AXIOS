@@ -16,45 +16,36 @@ import { useEffect, useState } from "react";
 import ModalComp from "./components/ModalComp";
 import axios from "axios";
 
-const getEmployees = async () => {
-  try{
-  const response = await axios.get("http://localhost:3333/employees");
-return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-}
-useEffect(() => {
-  getEmployees().then((data) => setData(data));
-}, []);
-
-
 
 
 const App = () => {
+
+  const getEmployees = async () => {
+    try{
+    const response = await axios.get("http://localhost:3333/employees");
+  return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useEffect(() => {
+    getEmployees().then((data) => setData(data));
+  }, []);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState([]);
   const [dataEdit, setDataEdit] = useState({});
-
   const isMobile = useBreakpointValue({
     base: true,
     lg: false,
   });
 
-  useEffect(() => {
-    const db_costumer = localStorage.getItem("cad_cliente")
-      ? JSON.parse(localStorage.getItem("cad_cliente"))
-      : [];
-
-    setData(db_costumer);
-  }, [setData]);
-
   const handleRemove = (email) => {
-    const newArray = data.filter((item) => item.email !== email);
+    const newArray = data.filter((employees) => employees.email !== email);
 
     setData(newArray);
 
-    localStorage.setItem("cad_cliente", JSON.stringify(newArray));
+    employees.setItem("cad_cliente", JSON.stringify(newArray));
   };
 
   return (
@@ -64,64 +55,103 @@ const App = () => {
       justify="center"
       fontSize="20px"
       fontFamily="poppins"
-    >
-      <Box maxW={800} w="100%" h="100vh" py={10} px={2}>
-        <Button colorScheme="blue" onClick={() => [setDataEdit({}), onOpen()]}>
-          NOVO CADASTRO
-        </Button>
+    > 
+      <Box
+        w="100%"
+        maxWidth={1480}
+        p="10"
+        bg="gray.100"
+        borderRadius={8}
+        boxShadow="md"
+      >
+        <Flex mb="8" justify="space-between" align="center">
+          <Button
+            as="a"
+            size="sm"
+            fontSize="sm"
+            colorScheme="blue"
+            leftIcon={<EditIcon />}
+            onClick={onOpen}
+          >
+            Novo Cadastro
+          </Button>
+          <ModalComp
 
-        <Box overflowY="auto" height="100%">
-          <Table mt="6">
-            <Thead>
-              <Tr>
-                <Th maxW={isMobile ? 5 : 100} fontSize="20px">
-                  Nome
-                </Th>
-                <Th maxW={isMobile ? 5 : 100} fontSize="20px">
-                  E-Mail
-                </Th>
-                <Th p={0}></Th>
-                <Th p={0}></Th>
+            data={data}
+            setData={setData}
+            dataEdit={dataEdit}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
+        </Flex>
+        <Table colorScheme="whiteAlpha">
+          <Thead>
+            <Tr>
+              <Th>Nome</Th>
+              <Th>E-mail</Th>
+              <Th>Telefone</Th>
+              <Th>CPF</Th>
+              <Th>RG</Th>
+              <Th>Endereço</Th>
+              <Th>CEP</Th>
+              <Th>UF</Th>
+              <Th>Cidade</Th>
+              <Th>Editar</Th>
+              <Th>Excluir</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {data?.map((employees, index) => (
+              <Tr key={index}>
+                <Td>{employees.name}</Td>
+                <Td>{employees.email}</Td>
+                <Td>{employees.phone}</Td>
+                <Td>{employees.cpf}</Td>
+                <Td>{employees.rg}</Td>
+                <Td>{employees.address}</Td>
+                <Td>{employees.cep}</Td>
+                <Td>{employees.uf}</Td>
+                <Td>{employees.city}</Td>
+                <Td>
+                  <Button
+
+                    as="a"
+                    size="sm"
+                    fontSize="sm"
+                    colorScheme="blue"
+                    leftIcon={<EditIcon />}
+                    onClick={() => {
+                      onOpen();
+                      setDataEdit({ ...employees, index });
+                    } 
+                  }
+                  >
+                    Editar
+                  </Button>
+                </Td>
+                <Td>
+                  <Button
+                    as="a"
+                    size="sm"
+                    fontSize="sm"
+                    colorScheme="red"
+                    leftIcon={<DeleteIcon />}
+                    onClick={() => handleRemove(employees.email)}
+                  >
+                    Excluir
+                  </Button>
+                </Td>
               </Tr>
-            </Thead>
-            <Tbody>
-              {data.map(({ name, email }, index) => (
-                <Tr key={index} cursor="pointer " _hover={{ bg: "gray.100" }}>
-                  <Td maxW={isMobile ? 5 : 100}>{name}</Td>
-                  <Td maxW={isMobile ? 5 : 100}>{email}</Td>
-                  <Td p={0}>
-                    <EditIcon
-                      fontSize={20}
-                      onClick={() => [
-                        setDataEdit({ name, email, index }),
-                        onOpen(),
-                      ]}
-                    />
-                  </Td>
-                  <Td p={0}>
-                    <DeleteIcon
-                      fontSize={20}
-                      onClick={() => handleRemove(email)}
-                    />
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </Box>
+            ))}
+          </Tbody>
+        </Table>
       </Box>
-      {isOpen && (
-        <ModalComp
-          isOpen={isOpen}
-          onClose={onClose}
-          data={data}
-          setData={setData}
-          dataEdit={dataEdit}
-          setDataEdit={setDataEdit}
-        />
-      )}
     </Flex>
   );
 };
 
 export default App;
+
+
+
+
