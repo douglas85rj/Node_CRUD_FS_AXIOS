@@ -20,6 +20,7 @@ import axios from "axios";
 
 const App = () => {
 
+  //get
   const getEmployees = async () => {
     try{
     const response = await axios.get("http://localhost:3333/employees");
@@ -31,6 +32,20 @@ const App = () => {
   useEffect(() => {
     getEmployees().then((data) => setData(data));
   }, []);
+
+  //update
+  const putEmployees = async (dataEdit) => {
+    try{
+    const response = await axios.put("http://localhost:3333/employees", setDataEdit);
+  return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useEffect(() => {
+    putEmployees().then((dataEdit) => setData(employees));
+  }, []);
+
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState([]);
@@ -78,11 +93,16 @@ const App = () => {
             onClose={onClose}
           />
         </Flex>
-        <Table colorScheme="whiteAlpha">
+        
+        <Table mt="6">
           <Thead>
             <Tr>
-              <Th>Nome</Th>
-              <Th>E-mail</Th>
+            <Th maxW={isMobile ? 5 : 100} fontSize="20px">
+                  Nome
+                </Th>
+              <Th maxW={isMobile ? 5 : 100} fontSize="20px">
+                  E-Mail
+                </Th>
               {/* <Th>Telefone</Th>
               <Th>CPF</Th>
               <Th>RG</Th>
@@ -92,13 +112,16 @@ const App = () => {
               <Th>Cidade</Th>
               <Th>Editar</Th>
               <Th>Excluir</Th> */}
+               <Th p={0}></Th>
+                <Th p={0}></Th>
             </Tr>
           </Thead>
           <Tbody>
             {data?.map((employees, index) => (
-              <Tr key={index}>
-                <Td>{employees.name}</Td>
-                <Td>{employees.email}</Td>
+                <Tr key={index} cursor="pointer " _hover={{ bg: "gray.100" }}>
+                <Td maxW={isMobile ? 5 : 100}>{employees.name}</Td>
+                <Td maxW={isMobile ? 5 : 100}>{employees.email}</Td>
+                <Td p={0}>
                 {/* <Td>{employees.phone}</Td>
                 <Td>{employees.cpf}</Td>
                 <Td>{employees.rg}</Td>
@@ -106,22 +129,17 @@ const App = () => {
                 <Td>{employees.cep}</Td>
                 <Td>{employees.uf}</Td>
                 <Td>{employees.city}</Td> */}
-                <Td>
-                  <Button
+                </Td>
 
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="blue"
-                    leftIcon={<EditIcon />}
-                    onClick={() => {
-                      onOpen();
-                      setDataEdit({ ...employees, index });
-                    } 
-                  }
-                  >
-                    Editar
-                  </Button>
+
+               <Td p={0}>
+               <EditIcon
+                      fontSize={20}
+                      onClick={() => [
+                        setDataEdit({ ...employees, index }),
+                        onOpen(),
+                      ]}
+                    />
                 </Td>
                 <Td>
                   <Button
